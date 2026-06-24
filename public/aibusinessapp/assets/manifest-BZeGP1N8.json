@@ -1,0 +1,16 @@
+{
+  "name": "OneOS AI Host Business Workspace",
+  "short_name": "OneOS Business",
+  "description": "Manage and Deploy your AI Business Tools with the OneOS Beta Portal.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "https://base44.com/logo_v2.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
