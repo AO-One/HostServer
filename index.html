@@ -91,29 +91,9 @@
             }
         };
 
-        // ENFORCING THE £1/MONTH MEMBERSHIP WALL
+        // UNLOCKED GATEKEEPER ROUTER
         function gatekeeper(destinationUrl) {
-            if (!currentUser) {
-                alert("Access Inhibited: Please register or log in to your OneOS user profile first.");
-                return;
-            }
-
-            // Checks logic rules: active or remaining cancelled time is allowed entry
-            if (currentUser.status === 'active' || currentUser.status === 'cancelled') {
-                if (destinationUrl.startsWith('/') && window.location.hostname === 'localhost') {
-                    if (destinationUrl === '/aibloggerapp') {
-                        window.location.href = 'http://localhost:5001';
-                        return;
-                    }
-                    if (destinationUrl === '/aibusinessapp') {
-                        window.location.href = 'http://localhost:5002';
-                        return;
-                    }
-                }
-                window.location.href = destinationUrl;
-            } else {
-                alert("Subscription Required: Launch commands for this AI application require an active tier status (£1/month).");
-            }
+            window.location.href = destinationUrl;
         }
 
         // Handle user profile submission arrays
