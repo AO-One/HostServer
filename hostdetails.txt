@@ -5,8 +5,8 @@ cd C:\Users\Peter\OneDrive\Anthony\One\Host\HostApps\AIBloggerApp
 cd C:\Users\Peter\OneDrive\Anthony\One\Host\HostApps\AIBusinessApp
 cd C:\Users\Peter\OneDrive\Anthony\One\Host\HostBackend
 http://localhost:5000/
-http://localhost:5000/aibusinessapp
-http://localhost:5000/Aaibloggerapp
+http://localhost:5002/aibusinessapp
+http://localhost:5001/aibloggerapp
 node server.js
 C:\Users\Terra Firma 1\Desktop\Anthony\Host\venv\Scripts\python.exe
 venv\Scripts\activate

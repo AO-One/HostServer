@@ -16,33 +16,25 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());                 
 app.use(express.json());         
 
-// 🛡️ 1. SECURE ACCESS PROTECTION MIDDLEWARE
-// This intercepts requests and blocks unpaid users from accessing application bundles
+// 🛡️ 1. UNLOCKED ACCESS MIDDLEWARE (Bypasses Login/Subscription Checks)
 function verifySubscription(req, res, next) {
-  const userHasPaid = true; // 💸 Right now this is hardcoded to true so you don't lock yourself out!
-  
-  if (userHasPaid) {
-    next(); // Pass right through to the app files safely!
-  } else {
-    res.redirect('/?error=subscription_required'); // Bounce them out to the master landing/billing page
-  }
+  // Directly grant access to all requests
+  next(); 
 }
 
 // 2. 📝 PORTAL A: AI BLOGGER APPLICATION ROUTES (PROTECTED)
-// The middleware sits right in the middle to guard the static folder assets
-app.use('/aibloggerapp', verifySubscription, express.static(path.join(__dirname, 'public', 'aibloggerapp')));
-app.get(/^\/aibloggerapp(?:\/.*)?$/, verifySubscription, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'aibloggerapp', 'index.html'));
+app.use('/aibloggerapp', verifySubscription, express.static(path.join(__dirname, 'public', 'public', 'aibloggerapp')));
+app.get(/^\/aibloggerapp/, verifySubscription, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'public', 'aibloggerapp', 'index.html'));
 });
 
 // 3. 💼 PORTAL B: AI BUSINESS APPLICATION ROUTES (PROTECTED)
-app.use('/aibusinessapp', verifySubscription, express.static(path.join(__dirname, 'public', 'aibusinessapp')));
-app.get(/^\/aibusinessapp(?:\/.*)?$/, verifySubscription, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'aibusinessapp', 'index.html'));
+app.use('/aibusinessapp', verifySubscription, express.static(path.join(__dirname, 'public', 'public', 'aibbusinessapp')));
+app.get(/^\/aibusinessapp/, verifySubscription, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'public', 'aibbusinessapp', 'index.html'));
 });
 
-// 4. 🎯 MAIN SERVER LANDING GATEWAY (OneOS Beta Portal for Customers)
-// This remains UNPROTECTED so prospects can actually visit the site and see your subscribe button!
+// 4. 🎯 MAIN SERVER LANDING GATEWAY
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {

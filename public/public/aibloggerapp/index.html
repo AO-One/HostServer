@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="https://base44.com/logo_v2.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="/aibloggerapp/assets/manifest-5AUv0Yy8.json" />
+    <title>Base44 APP</title>
+	<script>
+  async function sendBloggerAppLog(actionType, details) {
+      const dataToSave = {
+          timestamp: new Date().toISOString(),
+          app_name: "AIBloggerApp",
+          action: actionType,
+          details: details
+      };
+
+      try {
+          const response = await fetch('http://localhost:9000/write-record', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ table: 'blogger_app_logs', data: dataToSave })
+          });
+          const result = await response.json();
+          console.log("[AIBloggerApp] OneDatabase Response:", result.message);
+      } catch (error) {
+          console.error("[AIBloggerApp] Failed to stream log:", error);
+      }
+  }
+
+  // Auto-send launch log on page load
+  window.addEventListener('DOMContentLoaded', () => {
+      sendBloggerAppLog("APP_LAUNCH", "AIBloggerApp session initialized successfully.");
+  });
+</script>
+    <script type="module" crossorigin src="/aibloggerapp/assets/index-CQSiBumR.js"></script>
+    <link rel="stylesheet" crossorigin href="/aibloggerapp/assets/index-B538sUyM.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
