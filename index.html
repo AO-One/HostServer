@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HostServer: The central hub for AI-powered business, marketing, and blogging applications.">
+    <link rel="stylesheet" href="CSS/indexstylesheet.css">
+    <title>Host AI Apps Portal</title>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="auth-bar" id="authBar">
+            <div class="auth-logo">OneOS Core</div>
+            
+            <div class="auth-inputs" id="authInputs">
+                <input type="email" id="authEmail" placeholder="Email Address">
+                <input type="password" id="authPassword" placeholder="Password">
+                <button class="btn btn-blue" onclick="handleAuth('login')">Log In</button>
+                <button class="btn btn-green" onclick="handleAuth('register')">Sign Up</button>
+            </div>
+            
+            <div class="auth-profile" id="authProfile" style="display: none;">
+                <span>Logged in as: <strong id="userDisplayEmail" style="color: #fff;"></strong></span>
+                <span id="userStatusBadge" class="status-badge">Checking...</span>
+                <button class="btn btn-danger" onclick="handleLogout()">Log Out</button>
+            </div>
+        </div>
+
+        <header>
+            <h1>OneOS Beta Portal</h1>
+            <p>Manage, provision, and deploy your ecosystem of premium AI Host Apps.</p>
+        </header>
+
+        <div class="grid">
+            <div class="card" onclick="gatekeeper('http://localhost:5001/aibloggerapp')">
+                <h3>AIBloggerApp</h3>
+                <p>Automate layout generation, scheduling models, and continuous multi-channel content indexing.</p>
+            </div>
+
+            <div class="card" onclick="gatekeeper('http://localhost:5002/aibusinessapp')">
+                <h3>AIBusinessApp</h3>
+                <p>Operational CRM analysis and automated analytical data mapping configurations.</p>
+            </div>
+
+            <div class="card" onclick="gatekeeper('https://ao-one.github.io/AIBloggerApp/')">
+                <h3>AIBusinessAssistantApp</h3>
+                <p>Virtual corporate framework simulation and pipeline resource allocation assistant.</p>
+            </div>
+
+            <div class="card" onclick="gatekeeper('https://host-ai-form-builder.base44.app')">
+                <h3>AIFormBuilderApp</h3>
+                <p>Construct dynamic interactive data capture modules powered by heuristic UI scaling models.</p>
+            </div>
+
+            <div class="card" onclick="gatekeeper('https://host-ai-landing-pages.base44.app')">
+                <h3>AILandingPagesApp</h3>
+                <p>Instantly spawn target conversion funnels and structure semantic UI components via prompt input.</p>
+            </div>
+
+            <div class="card" onclick="gatekeeper('https://host-ai-marketing-suite.base44.app')">
+                <h3>AIMarketingSuiteApp</h3>
+                <p>Consolidated optimization node deployment managing outbound marketing configurations.</p>
+            </div>
+        </div>
+
+        <div class="utility-section">
+            <h3>HostServer Connectivity Terminal</h3>
+            <div style="margin-bottom: 15px;">
+                <input type="text" id="user_prompt_input" placeholder="Type diagnostic log entry here..." style="width: 70%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                <button class="btn-utility" onclick="handleUserSubmission()" style="padding: 8px 15px; cursor: pointer;">Write to OneDatabase</button>
+            </div>
+            <button class="btn-utility" onclick="sendMessage('Ping from OneOS Interface')">Execute Supabase Diagnostics Connection</button>
+        </div>
+
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        // Auto-read existing localized authentication tokens
+        window.onload = function() {
+            const token = localStorage.getItem('host_token');
+            const userEmail = localStorage.getItem('host_email');
+            const subStatus = localStorage.getItem('host_status'); 
+
+            if (token && userEmail) {
+                currentUser = { email: userEmail, status: subStatus || 'none' };
+                updateAuthUI();
+            }
+        };
+
+        // ENFORCING THE £1/MONTH MEMBERSHIP WALL
+        function gatekeeper(destinationUrl) {
+            if (!currentUser) {
+                alert("Access Inhibited: Please register or log in to your OneOS user profile first.");
+                return;
+            }
+
+            // Checks logic rules: active or remaining cancelled time is allowed entry
+            if (currentUser.status === 'active' || currentUser.status === 'cancelled') {
+                if (destinationUrl.startsWith('/') && window.location.hostname === 'localhost') {
+                    if (destinationUrl === '/aibloggerapp') {
+                        window.location.href = 'http://localhost:5001';
+                        return;
+                    }
+                    if (destinationUrl === '/aibusinessapp') {
+                        window.location.href = 'http://localhost:5002';
+                        return;
+                    }
+                }
+                window.location.href = destinationUrl;
+            } else {
+                alert("Subscription Required: Launch commands for this AI application require an active tier status (£1/month).");
+            }
+        }
+
+        // Handle user profile submission arrays
+        async function handleAuth(action) {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+
+            if (!email || !password) {
+                alert("Please satisfy all system parameters (Email and Password fields).");
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/auth/${action}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    alert(data.error || "Authentication procedure failed.");
+                    return;
+                }
+
+                localStorage.setItem('host_token', data.token);
+                localStorage.setItem('host_email', data.email);
+                localStorage.setItem('host_status', data.subscriptionStatus); 
+                
+                currentUser = { email: data.email, status: data.subscriptionStatus };
+                updateAuthUI();
+                alert(`Identity Verified: Welcome to OneOS System Management.`);
+
+            } catch (err) {
+                alert("System Alert: Local portal cannot interface with host authentication endpoints.");
+            }
+        }
+
+        function handleLogout() {
+            localStorage.clear();
+            currentUser = null;
+            document.getElementById('authInputs').style.display = 'flex';
+            document.getElementById('authProfile').style.display = 'none';
+            alert("Secure Session Cleared successfully.");
+        }
+
+        function updateAuthUI() {
+            document.getElementById('authInputs').style.display = 'none';
+            document.getElementById('authProfile').style.display = 'flex';
+            document.getElementById('userDisplayEmail').innerText = currentUser.email;
+            
+            const badge = document.getElementById('userStatusBadge');
+            badge.innerText = currentUser.status === 'active' || currentUser.status === 'cancelled' ? "Status: Verified Access" : "Status: Non-Paid Tier";
+            badge.className = (currentUser.status === 'active' || currentUser.status === 'cancelled') ? "status-badge status-active" : "status-badge status-none";
+        }
+
+        // Supabase Connection Verification Array
+        async function sendMessage(text) {
+            const url = 'https://txtoaydkpqlqhcwtiaye.supabase.co/functions/v1/super-service';
+            const anonKey = 'sb_publishable_2UbDbv2EUfHO5wbhRKfLfA_R5NErg3X';
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': anonKey,
+                        'Authorization': `Bearer ${anonKey}`
+                    },
+                    body: JSON.stringify({ message: text }),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    alert("Diagnostic Failure: " + (data.error || data.response || "Unknown Core Error"));
+                    return;
+                }
+
+                alert("HostServer Node Response: " + data.response); 
+            } catch (error) {
+                alert("Link Failure: Verify configuration parameters in database dashboard panels.");
+            }
+        }
+
+        // Core Connector Function to send data packets over to your database gate
+        async function saveToOneDatabase(tableName, dataObject) {
+            try {
+                const response = await fetch('http://localhost:9000/write-record', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ table: tableName, data: dataObject })
+                });
+                const result = await response.json();
+                console.log("OneDatabase Response:", result.message);
+                alert("OneDatabase Save Status: " + result.message);
+            } catch (error) {
+                console.error("Database connection failed:", error);
+                alert("Connection failed. Ensure database_gate.py is running on port 9000.");
+            }
+        }
+
+        // Action script handler to package the interface input fields
+        async function handleUserSubmission() {
+            const userInput = document.getElementById('user_prompt_input').value;
+            
+            if (!userInput) {
+                alert("Please type something in the entry box before writing to the database.");
+                return;
+            }
+            
+            const dataToSave = {
+                timestamp: new Date().toISOString(),
+                content: userInput,
+                app_name: "OneOS Portal Dashboard"
+            };
+            
+            // Fires it over to table 'ai_app_logs' in your proprietary engine
+            await saveToOneDatabase('ai_app_logs', dataToSave);
+            document.getElementById('user_prompt_input').value = '';
+        }
+    </script>
+</body>
+</html>
