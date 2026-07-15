@@ -34,12 +34,12 @@
         </header>
 
         <div class="grid">
-            <div class="card" onclick="gatekeeper('http://localhost:5001/aibloggerapp')">
+            <div class="card" onclick="gatekeeper('aibloggerapp')">
                 <h3>AIBloggerApp</h3>
                 <p>Automate layout generation, scheduling models, and continuous multi-channel content indexing.</p>
             </div>
 
-            <div class="card" onclick="gatekeeper('http://localhost:5002/aibusinessapp')">
+            <div class="card" onclick="gatekeeper('aibusinessapp')">
                 <h3>AIBusinessApp</h3>
                 <p>Operational CRM analysis and automated analytical data mapping configurations.</p>
             </div>
@@ -91,9 +91,34 @@
             }
         };
 
-        // UNLOCKED GATEKEEPER ROUTER
+        // ENFORCING THE £1/MONTH MEMBERSHIP WALL
         function gatekeeper(destinationUrl) {
-            window.location.href = destinationUrl;
+            if (!currentUser) {
+                alert("Access Inhibited: Please register or log in to your OneOS user profile first.");
+                return;
+            }
+
+            // Checks logic rules: active or remaining cancelled time is allowed entry
+            if (currentUser.status === 'active' || currentUser.status === 'cancelled') {
+                const isGitHub = window.location.hostname.includes('github.io');
+
+                // If clicking one of our locally hosted apps (aibloggerapp or aibusinessapp)
+                if (destinationUrl === 'aibloggerapp' || destinationUrl === 'aibusinessapp') {
+                    if (isGitHub) {
+                        // Live GitHub Pages redirection to subfolder
+                        window.location.href = `https://ao-one.github.io/HostServer/public/public/${destinationUrl}/`;
+                    } else {
+                        // Localhost Express server on port 5000
+                        window.location.href = `http://localhost:5000/${destinationUrl}`;
+                    }
+                    return;
+                }
+
+                // If clicking any external apps (like FormBuilder, LandingPages, etc.)
+                window.location.href = destinationUrl;
+            } else {
+                alert("Subscription Required: Launch commands for this AI application require an active tier status (£1/month).");
+            }
         }
 
         // Handle user profile submission arrays
@@ -218,4 +243,5 @@
         }
     </script>
 </body>
+</html>
 </html>
