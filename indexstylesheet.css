@@ -1,11 +1,9 @@
-/* UI Polish Enhancements */
-        body {
+ body {
             background-color: #0d1117;
             color: #f0f6fc;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* Improved Text Contrast */
         .card p {
             color: #9198a1 !important;
             font-size: 0.9rem;
@@ -17,7 +15,6 @@
             margin-bottom: 8px;
         }
 
-        /* Card Hover Effects */
         .card {
             transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
             border: 1px solid #30363d;
@@ -31,46 +28,4 @@
             transform: translateY(-3px);
             box-shadow: 0 4px 20px rgba(88, 166, 255, 0.15);
             border-color: #58a6ff;
-        }
-
-        /* Terminal & Button Styling */
-        .utility-section {
-            margin-top: 40px;
-            padding: 24px;
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-        }
-
-        .terminal-input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .btn-utility {
-            background-color: #21262d;
-            color: #c9d1d9;
-            border: 1px solid #30363d;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .btn-utility:hover {
-            background-color: #30363d;
-            border-color: #8b949e;
-            color: #ffffff;
-        }
-
-        .btn-accent {
-            background-color: #238636;
-            color: #ffffff;
-            border: 1px solid rgba(240, 246, 252, 0.1);
-        }
-
-        .btn-accent:hover {
-            background-color: #2ea043;
         }
