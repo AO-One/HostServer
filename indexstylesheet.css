@@ -1,268 +1,58 @@
-/* --- CORE DESIGN SYSTEM --- */
-:root {
-  --bg-base:#0a0e17;
-  --bg-surface:#121824;
-  --bg-input:#1b2336;
-  --accent-blue:#00f0ff;
-  --accent-green:#39ff14;
-  --accent-red:#ff3131;
-  --text-main:#e2e8f0;
-  --text-muted:#8a99ad;
-  --border-glow:rgba(0, 240, 255, 0.2);
-
-}
-
-* {
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-
-}
-
-body {
-  background-color:var(--bg-base);
-  color:var(--text-main);
-  min-height:100vh;
-  padding:20px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-
-}
-
-.container {
-  width:100%;
-  max-width:1200px;
-
-}
-
-/* --- TOP AUTHENTICATION CONTROL BAR --- */
-.auth-bar {
-  background:var(--bg-surface);
-  padding:16px 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-radius:12px;
-  margin-bottom: 40px;
-  border:1px solid #222f47;
-  box-shadow:0 4px 20px rgba(0, 0, 0, 0.4);
-
-}
-
-.auth-logo {
-  font-size:1.1rem;
-  font-weight:700;
-  letter-spacing:1px;
-  color:var(--accent-blue);
-  text-shadow:0 0 10px var(--border-glow);
-
-}
-
-.auth-inputs {
-  display:flex;
-  gap:12px;
-
-}
-
-.auth-inputs input {
-  padding:10px 14px;
-  background:var(--bg-input);
-  border:1px solid #2d3d5a;
-  color:#fff;
-  border-radius:6px;
-  font-size:0.9rem;
-  transition:all 0.3s ease;
-
-}
-
-.auth-inputs input:focus {
-  outline:none;
-  border-color:var(--accent-blue);
-  box-shadow:0 0 8px var(--border-glow);
-
-}
-
-.btn {
-  padding:10px 20px;
-  font-weight:600;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  transition:all 0.2s ease;
-  font-size:0.9rem;
-
-}
-
- .btn-blue {
-   background:#0066cc;
-   color:white;
-
-}
-
-.btn-blue:hover {
-   background:#007fff;
-   box-shadow:0 0 12px rgba(0, 127, 255, 0.4);
-
-}
-        
-.btn-green {
-   background:#1e7e34;
-   color:white;
-
-}
-
-.btn-green:hover {
-   background:#28a745;
-   box-shadow: 0 0 12px rgba(40, 167, 69, 0.4);
-
-}
-
-.btn-danger {
-   background:#bd2130;
-   color:white;
-
-}
-
-.btn-danger:hover {
-   background:#dc3545;
-
-}
-
-.auth-profile {
-   display:flex;
-   align-items:center;
-   gap:15px;
-   font-size:0.95rem;
-
-}
-
-.status-badge {
-   font-weight:700;
-   font-size:0.8rem;
-   padding:4px 10px;
-   border-radius:20px;
-   text-transform:uppercase;
-   letter-spacing:0.5px;
-
-
-}
-
-.status-active {
-   background:rgba(57, 255, 20, 0.15);
-   color: var(--accent-green);
-   border:1px solid var(--accent-green);
-
-}
-
-.status-none {
-   background:rgba(255, 49, 49, 0.15);
-   color:var(--accent-red);
-   border:1px solid var(--accent-red);
-
-}
-
-/* --- HERO HEADER --- */
-header {
-   text-align:center;
-   margin-bottom:40px;
-
-}
-
-header h1 {
-   font-size:2.8rem;
-   font-weight:800;
-   background:linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
-   -webkit-background-clip:text;
-   -webkit-text-fill-color:transparent;
-    margin-bottom:10px;
-
-}
-
-header p {
-  color:var(--text-muted);
-  font-size:1.1rem;
-
-}
-
-/* --- DASHBOARD GRID ARCHITECTURE --- */
-.grid {
-   display:grid;
-   grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));
-   gap:24px;
-   margin-bottom:5px;
-
-}
-
-.card {
-   background:var(--bg-surface);
-   border:1px solid #1f2a3f;
-   border-radius:12px;
-   padding:24px;
-   cursor:pointer;
-   transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-   position:relative;
-   overflow:hidden;
-   display:flex;
-   flex-direction:column;
-   justify-content:space-between;
-   min-height:160px;
-
-}
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 4px; height: 100%;
-            background: var(--accent-blue);
-            opacity: 0.3;
-            transition: all 0.3s ease;
+/* UI Polish Enhancements */
+        body {
+            background-color: #0d1117;
+            color: #f0f6fc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: #314566;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 240, 255, 0.05);
-        }
-
-        .card:hover::before {
-            opacity: 1;
-            box-shadow: 0 0 10px var(--accent-blue);
+        /* Improved Text Contrast */
+        .card p {
+            color: #9198a1 !important;
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
 
         .card h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #ffffff;
+            color: #58a6ff;
             margin-bottom: 8px;
         }
 
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.5;
+        /* Card Hover Effects */
+        .card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            background: #161b22;
         }
 
-        /* --- FOOTER UTILITIES --- */
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 20px rgba(88, 166, 255, 0.15);
+            border-color: #58a6ff;
+        }
+
+        /* Terminal & Button Styling */
         .utility-section {
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 1px solid #1b2336;
-            text-align: center;
+            margin-top: 40px;
+            padding: 24px;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
         }
 
-        .utility-section h3 {
-            font-size: 1.1rem;
-            color: var(--text-muted);
+        .terminal-input-group {
+            display: flex;
+            gap: 10px;
             margin-bottom: 15px;
         }
 
         .btn-utility {
-            background: transparent;
-            border: 1px solid #2d3d5a;
-            color: var(--text-main);
-            padding: 10px 24px;
+            background-color: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            padding: 8px 16px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
@@ -270,7 +60,17 @@ header p {
         }
 
         .btn-utility:hover {
-            background: var(--bg-surface);
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
+            background-color: #30363d;
+            border-color: #8b949e;
+            color: #ffffff;
+        }
+
+        .btn-accent {
+            background-color: #238636;
+            color: #ffffff;
+            border: 1px solid rgba(240, 246, 252, 0.1);
+        }
+
+        .btn-accent:hover {
+            background-color: #2ea043;
         }
