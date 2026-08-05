@@ -44,7 +44,8 @@
                 <p>Operational CRM analysis and automated analytical data mapping configurations.</p>
             </div>
 
-            <div class="card" onclick="gatekeeper('https://ao-one.github.io/AIBloggerApp/')">
+            <!-- Fixed duplicate URL targeting AIBloggerApp -->
+            <div class="card" onclick="gatekeeper('https://ao-one.github.io/AIBusinessAssistantApp/')">
                 <h3>AIBusinessAssistantApp</h3>
                 <p>Virtual corporate framework simulation and pipeline resource allocation assistant.</p>
             </div>
@@ -78,8 +79,16 @@
 
     <script>
         let currentUser = null;
+        
+        // Dynamically set API Host (Uses local domain/IP or relative paths in deployment)
+        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+            ? 'http://localhost:5000' 
+            : window.location.origin;
 
-        // Auto-read existing localized authentication tokens
+        const DB_GATE_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:9000'
+            : '/api/db';
+
         window.onload = function() {
             const token = localStorage.getItem('host_token');
             const userEmail = localStorage.getItem('host_email');
@@ -91,37 +100,31 @@
             }
         };
 
-        // ENFORCING THE £1/MONTH MEMBERSHIP WALL
         function gatekeeper(destinationUrl) {
             if (!currentUser) {
                 alert("Access Inhibited: Please register or log in to your OneOS user profile first.");
                 return;
             }
 
-            // Checks logic rules: active or remaining cancelled time is allowed entry
             if (currentUser.status === 'active' || currentUser.status === 'cancelled') {
                 const isGitHub = window.location.hostname.includes('github.io');
 
-                // If clicking one of our locally hosted apps (aibloggerapp or aibusinessapp)
                 if (destinationUrl === 'aibloggerapp' || destinationUrl === 'aibusinessapp') {
                     if (isGitHub) {
-                        // Live GitHub Pages redirection to subfolder
-                        window.location.href = `https://ao-one.github.io/HostServer/public/public/${destinationUrl}/`;
+                        // Fixed redundant /public/public/ path segment
+                        window.location.href = `https://ao-one.github.io/HostServer/public/${destinationUrl}/`;
                     } else {
-                        // Localhost Express server on port 5000
-                        window.location.href = `http://localhost:5000/${destinationUrl}`;
+                        window.location.href = `${API_BASE}/${destinationUrl}`;
                     }
                     return;
                 }
 
-                // If clicking any external apps (like FormBuilder, LandingPages, etc.)
                 window.location.href = destinationUrl;
             } else {
                 alert("Subscription Required: Launch commands for this AI application require an active tier status (£1/month).");
             }
         }
 
-        // Handle user profile submission arrays
         async function handleAuth(action) {
             const email = document.getElementById('authEmail').value;
             const password = document.getElementById('authPassword').value;
@@ -132,7 +135,7 @@
             }
 
             try {
-                const response = await fetch(`/api/auth/${action}`, {
+                const response = await fetch(`${API_BASE}/api/auth/${action}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -176,7 +179,6 @@
             badge.className = (currentUser.status === 'active' || currentUser.status === 'cancelled') ? "status-badge status-active" : "status-badge status-none";
         }
 
-        // Supabase Connection Verification Array
         async function sendMessage(text) {
             const url = 'https://txtoaydkpqlqhcwtiaye.supabase.co/functions/v1/super-service';
             const anonKey = 'sb_publishable_2UbDbv2EUfHO5wbhRKfLfA_R5NErg3X';
@@ -205,10 +207,9 @@
             }
         }
 
-        // Core Connector Function to send data packets over to your database gate
         async function saveToOneDatabase(tableName, dataObject) {
             try {
-                const response = await fetch('http://localhost:9000/write-record', {
+                const response = await fetch(`${DB_GATE_BASE}/write-record`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ table: tableName, data: dataObject })
@@ -218,11 +219,10 @@
                 alert("OneDatabase Save Status: " + result.message);
             } catch (error) {
                 console.error("Database connection failed:", error);
-                alert("Connection failed. Ensure database_gate.py is running on port 9000.");
+                alert("Connection failed. Ensure database_gate.py is running.");
             }
         }
 
-        // Action script handler to package the interface input fields
         async function handleUserSubmission() {
             const userInput = document.getElementById('user_prompt_input').value;
             
@@ -237,7 +237,6 @@
                 app_name: "OneOS Portal Dashboard"
             };
             
-            // Fires it over to table 'ai_app_logs' in your proprietary engine
             await saveToOneDatabase('ai_app_logs', dataToSave);
             document.getElementById('user_prompt_input').value = '';
         }
