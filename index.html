@@ -6,6 +6,7 @@
     <meta name="description" content="HostServer: The central hub for AI-powered business, marketing, and blogging applications.">
     <link rel="stylesheet" href="indexstylesheet.css">
     <title>Host AI Apps Portal</title>
+    
 </head>
 <body>
 
@@ -65,27 +66,16 @@
             </div>
         </div>
 
-        <div class="utility-section">
-            <h3 style="margin-top: 0; margin-bottom: 15px; color: #f0f6fc;">HostServer Connectivity Terminal</h3>
-            <div class="terminal-input-group">
-                <input type="text" id="user_prompt_input" placeholder="Type diagnostic log entry here..." style="flex: 1; padding: 10px; border-radius: 6px; border: 1px solid #30363d; background: #0d1117; color: #f0f6fc;">
-                <button class="btn-utility btn-accent" onclick="handleUserSubmission()">Write to OneDatabase</button>
-            </div>
-            <button class="btn-utility" onclick="sendMessage('Ping from OneOS Interface')">Execute Supabase Diagnostics Connection</button>
-        </div>
-
     </div>
 
     <script>
         let currentUser = null;
         
-        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+        // Define backend endpoint URL
+        // Replace 'http://localhost:5000' with your live backend server URL (e.g., Render/Railway) when ready for full cloud production
+        const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
             ? 'http://localhost:5000' 
-            : window.location.origin;
-
-        const DB_GATE_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-            ? 'http://localhost:9000'
-            : '/api/db';
+            : 'http://localhost:5000'; 
 
         window.onload = function() {
             const token = localStorage.getItem('host_token');
@@ -154,7 +144,7 @@
                 alert(`Identity Verified: Welcome to OneOS System Management.`);
 
             } catch (err) {
-                alert("System Alert: Local portal cannot interface with host authentication endpoints.");
+                alert("System Alert: Local portal cannot interface with host authentication endpoints. Ensure your server is running on port 5000.");
             }
         }
 
@@ -174,68 +164,6 @@
             const badge = document.getElementById('userStatusBadge');
             badge.innerText = currentUser.status === 'active' || currentUser.status === 'cancelled' ? "Status: Verified Access" : "Status: Non-Paid Tier";
             badge.className = (currentUser.status === 'active' || currentUser.status === 'cancelled') ? "status-badge status-active" : "status-badge status-none";
-        }
-
-        async function sendMessage(text) {
-            const url = 'https://txtoaydkpqlqhcwtiaye.supabase.co/functions/v1/super-service';
-            const anonKey = 'sb_publishable_2UbDbv2EUfHO5wbhRKfLfA_R5NErg3X';
-
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': anonKey,
-                        'Authorization': `Bearer ${anonKey}`
-                    },
-                    body: JSON.stringify({ message: text }),
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    alert("Diagnostic Failure: " + (data.error || data.response || "Unknown Core Error"));
-                    return;
-                }
-
-                alert("HostServer Node Response: " + data.response); 
-            } catch (error) {
-                alert("Link Failure: Verify configuration parameters in database dashboard panels.");
-            }
-        }
-
-        async function saveToOneDatabase(tableName, dataObject) {
-            try {
-                const response = await fetch(`${DB_GATE_BASE}/write-record`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ table: tableName, data: dataObject })
-                });
-                const result = await response.json();
-                console.log("OneDatabase Response:", result.message);
-                alert("OneDatabase Save Status: " + result.message);
-            } catch (error) {
-                console.error("Database connection failed:", error);
-                alert("Connection failed. Ensure database_gate.py is running.");
-            }
-        }
-
-        async function handleUserSubmission() {
-            const userInput = document.getElementById('user_prompt_input').value;
-            
-            if (!userInput) {
-                alert("Please type something in the entry box before writing to the database.");
-                return;
-            }
-            
-            const dataToSave = {
-                timestamp: new Date().toISOString(),
-                content: userInput,
-                app_name: "OneOS Portal Dashboard"
-            };
-            
-            await saveToOneDatabase('ai_app_logs', dataToSave);
-            document.getElementById('user_prompt_input').value = '';
         }
     </script>
 </body>
