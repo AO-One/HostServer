@@ -30,7 +30,7 @@
 
         <header>
             <h1>OneOS Beta Portal</h1>
-            <p>Manage, provision, and deploy your ecosystem of premium AI Host Apps.</p>
+            <p style="color: #8b949e;">Manage, provision, and deploy your ecosystem of premium AI Host Apps.</p>
         </header>
 
         <div class="grid">
@@ -44,7 +44,6 @@
                 <p>Operational CRM analysis and automated analytical data mapping configurations.</p>
             </div>
 
-            <!-- Fixed duplicate URL targeting AIBloggerApp -->
             <div class="card" onclick="gatekeeper('https://ao-one.github.io/AIBusinessAssistantApp/')">
                 <h3>AIBusinessAssistantApp</h3>
                 <p>Virtual corporate framework simulation and pipeline resource allocation assistant.</p>
@@ -67,10 +66,10 @@
         </div>
 
         <div class="utility-section">
-            <h3>HostServer Connectivity Terminal</h3>
-            <div style="margin-bottom: 15px;">
-                <input type="text" id="user_prompt_input" placeholder="Type diagnostic log entry here..." style="width: 70%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
-                <button class="btn-utility" onclick="handleUserSubmission()" style="padding: 8px 15px; cursor: pointer;">Write to OneDatabase</button>
+            <h3 style="margin-top: 0; margin-bottom: 15px; color: #f0f6fc;">HostServer Connectivity Terminal</h3>
+            <div class="terminal-input-group">
+                <input type="text" id="user_prompt_input" placeholder="Type diagnostic log entry here..." style="flex: 1; padding: 10px; border-radius: 6px; border: 1px solid #30363d; background: #0d1117; color: #f0f6fc;">
+                <button class="btn-utility btn-accent" onclick="handleUserSubmission()">Write to OneDatabase</button>
             </div>
             <button class="btn-utility" onclick="sendMessage('Ping from OneOS Interface')">Execute Supabase Diagnostics Connection</button>
         </div>
@@ -80,7 +79,6 @@
     <script>
         let currentUser = null;
         
-        // Dynamically set API Host (Uses local domain/IP or relative paths in deployment)
         const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
             ? 'http://localhost:5000' 
             : window.location.origin;
@@ -111,7 +109,6 @@
 
                 if (destinationUrl === 'aibloggerapp' || destinationUrl === 'aibusinessapp') {
                     if (isGitHub) {
-                        // Fixed redundant /public/public/ path segment
                         window.location.href = `https://ao-one.github.io/HostServer/public/${destinationUrl}/`;
                     } else {
                         window.location.href = `${API_BASE}/${destinationUrl}`;
