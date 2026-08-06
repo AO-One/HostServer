@@ -6,7 +6,6 @@
     <meta name="description" content="HostServer: The central hub for AI-powered business, marketing, and blogging applications.">
     <link rel="stylesheet" href="indexstylesheet.css">
     <title>Host AI Apps Portal</title>
-    
 </head>
 <body>
 
@@ -71,11 +70,10 @@
     <script>
         let currentUser = null;
         
-        // Define backend endpoint URL
-        // Replace 'http://localhost:5000' with your live backend server URL (e.g., Render/Railway) when ready for full cloud production
+        // Database Gate Endpoint
         const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-            ? 'http://localhost:5000' 
-            : 'http://localhost:5000'; 
+            ? 'http://localhost:9000' 
+            : 'http://localhost:9000'; 
 
         window.onload = function() {
             const token = localStorage.getItem('host_token');
@@ -99,9 +97,10 @@
 
                 if (destinationUrl === 'aibloggerapp' || destinationUrl === 'aibusinessapp') {
                     if (isGitHub) {
+                        // Point to the exact public static directory in HostServer repo
                         window.location.href = `https://ao-one.github.io/HostServer/public/${destinationUrl}/`;
                     } else {
-                        window.location.href = `${API_BASE}/${destinationUrl}`;
+                        window.location.href = `/public/${destinationUrl}/`;
                     }
                     return;
                 }
@@ -144,7 +143,7 @@
                 alert(`Identity Verified: Welcome to OneOS System Management.`);
 
             } catch (err) {
-                alert("System Alert: Local portal cannot interface with host authentication endpoints. Ensure your server is running on port 5000.");
+                alert("System Alert: Local portal cannot interface with host authentication endpoints. Ensure database_gate.py is running on port 9000.");
             }
         }
 
