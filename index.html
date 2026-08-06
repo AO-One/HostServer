@@ -96,14 +96,13 @@
                 const isGitHub = window.location.hostname.includes('github.io');
 
                 if (destinationUrl === 'aibloggerapp' || destinationUrl === 'aibusinessapp') {
-    if (isGitHub) {
-        // Updated to include the nested public/public folder structure
-        window.location.href = `https://ao-one.github.io/HostServer/public/public/${destinationUrl}/`;
-    } else {
-        window.location.href = `/public/public/${destinationUrl}/`;
-    }
-    return;
-}
+                    if (isGitHub) {
+                        window.location.href = `https://ao-one.github.io/HostServer/public/public/${destinationUrl}/`;
+                    } else {
+                        window.location.href = `/public/public/${destinationUrl}/`;
+                    }
+                    return;
+                }
 
                 window.location.href = destinationUrl;
             } else {
