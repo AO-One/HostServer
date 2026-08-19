@@ -192,7 +192,7 @@
 
     if (currentUser.status === 'active' || currentUser.status === 'cancelled') {
         
-        // Force local redirection for AIBloggerApp testing
+        // Force redirect to your local npx serve instance on port 5001
         if (destinationUrl === 'aibloggerapp') {
             window.location.href = 'http://localhost:5001';
             return;
