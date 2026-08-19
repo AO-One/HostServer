@@ -185,28 +185,29 @@
         };
 
         function gatekeeper(destinationUrl) {
-            if (!currentUser) {
-                alert("Access Inhibited: Please register or log in to your OneOS user profile first.");
-                return;
-            }
+    if (!currentUser) {
+        alert("Access Inhibited: Please register or log in to your OneOS user profile first.");
+        return;
+    }
 
-            if (currentUser.status === 'active' || currentUser.status === 'cancelled') {
-                const isGitHub = window.location.hostname.includes('github.io');
-
-                if (destinationUrl === 'aibloggerapp' || destinationUrl === 'aibusinessapp') {
-                    if (isGitHub) {
-                        window.location.href = `https://ao-one.github.io/HostServer/public/public/${destinationUrl}/`;
-                    } else {
-                        window.location.href = `http://localhost:61655`;
-                    }
-                    return;
-                }
-
-                window.location.href = destinationUrl;
-            } else {
-                alert("Subscription Required: Launch commands for this AI application require an active tier status (£1/month).");
-            }
+    if (currentUser.status === 'active' || currentUser.status === 'cancelled') {
+        
+        // Force local redirection for AIBloggerApp testing
+        if (destinationUrl === 'aibloggerapp') {
+            window.location.href = 'http://localhost:5001';
+            return;
         }
+
+        if (destinationUrl === 'aibusinessapp') {
+            window.location.href = `/public/public/${destinationUrl}/`;
+            return;
+        }
+
+        window.location.href = destinationUrl;
+    } else {
+        alert("Subscription Required: Launch commands for this AI application require an active tier status (£1/month).");
+    }
+}
 
         async function handleAuth(action) {
             const email = document.getElementById('authEmail').value;
