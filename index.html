@@ -70,7 +70,7 @@
     <script>
         let currentUser = null;
         
-        // Updated to target your Python backend on port 8000
+        // Local Python backend port
         const API_BASE = 'http://localhost:8000'; 
 
         window.onload = function() {
@@ -91,26 +91,17 @@
             }
 
             if (currentUser.status === 'active' || currentUser.status === 'cancelled') {
-                const isGitHub = window.location.hostname.includes('github.io');
-
-                // Handling local vs production routes for AIBloggerApp
+                
+                // Routes to local Vite app on port 5001
                 if (destinationUrl === 'aibloggerapp') {
-                    if (isGitHub) {
-                        window.location.href = `https://ao-one.github.io/HostServer/public/public/${destinationUrl}/`;
-                    } else {
-                        window.location.href = 'http://localhost:5000';
-                    }
+                    window.location.href = 'http://localhost:5001';
                     return;
                 }
 
-                if (destinationUrl === 'aibloggerapp') {
-    if (isGitHub) {
-        window.location.href = `https://ao-one.github.io/HostServer/public/public/${destinationUrl}/`;
-    } else {
-        window.location.href = 'http://localhost:5001'; // Pointing to 5001
-    }
-    return;
-}
+                if (destinationUrl === 'aibusinessapp') {
+                    window.location.href = `/public/public/${destinationUrl}/`;
+                    return;
+                }
 
                 window.location.href = destinationUrl;
             } else {
@@ -151,97 +142,6 @@
 
             } catch (err) {
                 alert("System Alert: Local portal cannot interface with host authentication endpoints. Ensure app.py is running on port 8000.");
-            }
-        }
-
-        function handleLogout() {
-            localStorage.clear();
-            currentUser = null;
-            document.getElementById('authInputs').style.display = 'flex';
-            document.getElementById('authProfile').style.display = 'none';
-            alert("Secure Session Cleared successfully.");
-        }
-
-        function updateAuthUI() {
-            document.getElementById('authInputs').style.display = 'none';
-            document.getElementById('authProfile').style.display = 'flex';
-            document.getElementById('userDisplayEmail').innerText = currentUser.email;
-            
-            const badge = document.getElementById('userStatusBadge');
-            badge.innerText = currentUser.status === 'active' || currentUser.status === 'cancelled' ? "Status: Verified Access" : "Status: Non-Paid Tier";
-            badge.className = (currentUser.status === 'active' || currentUser.status === 'cancelled') ? "status-badge status-active" : "status-badge status-none";
-        }
-    </script>
-</body>
-</html>        window.onload = function() {
-            const token = localStorage.getItem('host_token');
-            const userEmail = localStorage.getItem('host_email');
-            const subStatus = localStorage.getItem('host_status'); 
-
-            if (token && userEmail) {
-                currentUser = { email: userEmail, status: subStatus || 'none' };
-                updateAuthUI();
-            }
-        };
-
-        function gatekeeper(destinationUrl) {
-    if (!currentUser) {
-        alert("Access Inhibited: Please register or log in to your OneOS user profile first.");
-        return;
-    }
-
-    if (currentUser.status === 'active' || currentUser.status === 'cancelled') {
-        
-        // Force redirect to your local npx serve instance on port 5001
-        if (destinationUrl === 'aibloggerapp') {
-            window.location.href = 'http://localhost:5001';
-            return;
-        }
-
-        if (destinationUrl === 'aibusinessapp') {
-            window.location.href = `/public/public/${destinationUrl}/`;
-            return;
-        }
-
-        window.location.href = destinationUrl;
-    } else {
-        alert("Subscription Required: Launch commands for this AI application require an active tier status (£1/month).");
-    }
-}
-
-        async function handleAuth(action) {
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-
-            if (!email || !password) {
-                alert("Please satisfy all system parameters (Email and Password fields).");
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE}/api/auth/${action}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    alert(data.error || "Authentication procedure failed.");
-                    return;
-                }
-
-                localStorage.setItem('host_token', data.token);
-                localStorage.setItem('host_email', data.email);
-                localStorage.setItem('host_status', data.subscriptionStatus); 
-                
-                currentUser = { email: data.email, status: data.subscriptionStatus };
-                updateAuthUI();
-                alert(`Identity Verified: Welcome to OneOS System Management.`);
-
-            } catch (err) {
-                alert("System Alert: Local portal cannot interface with host authentication endpoints. Ensure database_gate.py is running on port 9000.");
             }
         }
 
