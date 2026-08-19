@@ -103,14 +103,14 @@
                     return;
                 }
 
-                if (destinationUrl === 'aibusinessapp') {
-                    if (isGitHub) {
-                        window.location.href = `https://ao-one.github.io/HostServer/public/public/${destinationUrl}/`;
-                    } else {
-                        window.location.href = `/public/public/${destinationUrl}/`;
-                    }
-                    return;
-                }
+                if (destinationUrl === 'aibloggerapp') {
+    if (isGitHub) {
+        window.location.href = `https://ao-one.github.io/HostServer/public/public/${destinationUrl}/`;
+    } else {
+        window.location.href = 'http://localhost:5001'; // Pointing to 5001
+    }
+    return;
+}
 
                 window.location.href = destinationUrl;
             } else {
