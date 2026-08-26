@@ -70,8 +70,8 @@
     <script>
         let currentUser = null;
         
-        // Local Python backend port
-        const API_BASE = 'http://localhost:8000'; 
+        // Updated to match database_gate.py port
+        const API_BASE = 'http://localhost:9000'; 
 
         window.onload = function() {
             const token = localStorage.getItem('host_token');
@@ -92,9 +92,9 @@
 
             if (currentUser.status === 'active' || currentUser.status === 'cancelled') {
                 
-                // Routes to local Vite app on port 5001
+                // Routes to live Vite dev server on port 5173
                 if (destinationUrl === 'aibloggerapp') {
-                    window.location.href = 'http://localhost:5001';
+                    window.location.href = 'http://localhost:5173';
                     return;
                 }
 
@@ -141,7 +141,7 @@
                 alert(`Identity Verified: Welcome to OneOS System Management.`);
 
             } catch (err) {
-                alert("System Alert: Local portal cannot interface with host authentication endpoints. Ensure app.py is running on port 8000.");
+                alert("System Alert: Local portal cannot interface with host authentication endpoints. Ensure database_gate.py is running on port 9000.");
             }
         }
 
